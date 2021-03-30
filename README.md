@@ -1,0 +1,1 @@
+# Connectivity of local minimums in the problem of classification
