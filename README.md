@@ -1,4 +1,4 @@
-### JetBrains [project](https://internship.jetbrains.com/projects/958/)  
+### JetBrains internship program [project](https://internship.jetbrains.com/projects/958/)  
 
 # Connectivity of local minimums in the problem of classification
 
