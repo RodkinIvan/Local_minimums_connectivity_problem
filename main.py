@@ -5,11 +5,6 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 
-n = torch.randn(20, 30, 10, 10)
-m = nn.Conv2d(30, 40, (5, 5))
-p = nn.MaxPool2d(2, 2)
-print(m(n).size())
-
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -27,7 +22,7 @@ testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 
 class Net(nn.Module):
     c1 = 6
-    c2 = 18
+    c2 = 16
     kerSz = 5
     ker = (kerSz, kerSz)
     pl = 2
