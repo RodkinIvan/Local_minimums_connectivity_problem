@@ -31,10 +31,10 @@ class Net(nn.Module):
 criterion = nn.CrossEntropyLoss()
 
 
-def learn(nt, train_loader):
+def learn(nt, train_loader, epochs=12):
     optimizer = optim.SGD(nt.parameters(), lr=0.001, momentum=0.9)
 
-    for epoch in range(12):  # loop over the dataset multiple times
+    for epoch in range(epochs):  # loop over the dataset multiple times
 
         running_loss = 0.0
         for i, data in enumerate(train_loader, 0):
@@ -46,7 +46,7 @@ def learn(nt, train_loader):
 
             # forward + backward + optimize
             outputs = nt(inputs)
-            loss = Net.criterion(outputs, labels)
+            loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
 
