@@ -9,6 +9,7 @@ class Way:
     def __init__(self, w1, w2, theta):
         self.w1 = w1
         self.w2 = w2
+        self.theta = theta
 
     def count(self, t):
         return (1 - t) ** 2 * self.w1 + 2 * t * (1 - t) * self.theta + t ** 2 * self.w2
@@ -29,6 +30,8 @@ def count_way(way, train_loader, freq=10):
         net.fc2.bias.data = way[7].count(t/freq)
         for i, data in enumerate(train_loader, 0):
             inputs, labels = data
+            labels = labels.to(Net.cuda)
+            inputs = inputs.to(Net.cuda)
             outputs = net(inputs)
             criterion = Net.criterion(outputs, labels)
             loss += criterion.item()

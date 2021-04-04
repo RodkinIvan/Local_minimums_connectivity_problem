@@ -4,8 +4,7 @@ import torchvision.transforms as transforms
 import Net
 import Way
 
-
-cuda = torch.device('cuda')
+torch.cuda.set_device(0)
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
