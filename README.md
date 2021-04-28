@@ -8,9 +8,7 @@ I use the PyTorch and CIFAR-100 dataset.
 
 
 ## Run
-**!!! PyTorch is expected to be installed in this project !!!**
-
-**!!! NVIDIA driver and CUDA are expected to be installed on your computer !!!**
+**!!! NVIDIA driver is expected to be installed on your computer !!!**
 ```
 python3 main.py
 ```

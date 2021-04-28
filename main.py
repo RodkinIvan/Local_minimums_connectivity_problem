@@ -1,8 +1,8 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-import Net
-import Way
+import net
+import way
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -17,26 +17,26 @@ testset = torchvision.datasets.CIFAR100(root='./data', train=False,
 testloader = torch.utils.data.DataLoader(testset, batch_size=4,
                                          shuffle=False, num_workers=2)
 
-net1 = Net.Net()
-net2 = Net.Net()
+net1 = net.Net()
+net2 = net.Net()
 print("The first NN:")
-Net.learn(net1, trainloader)
+# net.learn(net1, trainloader)
 print("\n\n")
 print("The second NN:")
-Net.learn(net2, trainloader)
-
+# net.learn(net2, trainloader)
 
 minimum = 1000
 for theta in range(5):
-    way = [Way.Way(net1.conv1.weight.data, net2.conv1.weight.data, theta),
-           Way.Way(net1.conv1.bias.data, net2.conv1.bias.data, theta),
-           Way.Way(net1.conv2.weight.data, net2.conv2.weight.data, theta),
-           Way.Way(net1.conv2.bias.data, net2.conv2.bias.data, theta),
-           Way.Way(net1.fc1.weight.data, net2.fc1.weight.data, theta),
-           Way.Way(net1.fc1.bias.data, net2.fc1.bias.data, theta),
-           Way.Way(net1.fc2.weight.data, net2.fc2.weight.data, theta),
-           Way.Way(net1.fc2.bias.data, net2.fc2.bias.data, theta)]
-    minimum = min(minimum, Way.count_way(way, trainloader))
+    currentWay = [way.Way(net1.conv1.weight.data, net2.conv1.weight.data, theta),
+                  way.Way(net1.conv1.bias.data, net2.conv1.bias.data, theta),
+                  way.Way(net1.conv2.weight.data, net2.conv2.weight.data, theta),
+                  way.Way(net1.conv2.bias.data, net2.conv2.bias.data, theta),
+                  way.Way(net1.fc1.weight.data, net2.fc1.weight.data, theta),
+                  way.Way(net1.fc1.bias.data, net2.fc1.bias.data, theta),
+                  way.Way(net1.fc2.weight.data, net2.fc2.weight.data, theta),
+                  way.Way(net1.fc2.bias.data, net2.fc2.bias.data, theta)]
+
+    minimum = min(minimum, way.count_way(currentWay, trainloader))
     print(theta, ': ', minimum)
 
 print('minimal :  ', minimum)
