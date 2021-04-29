@@ -1,8 +1,10 @@
 import torch
 import torchvision
 import torchvision.transforms as transforms
-import net
+from models import net
 import way
+from config import *
+
 
 transform = transforms.Compose(
     [transforms.ToTensor(),
@@ -20,12 +22,11 @@ testloader = torch.utils.data.DataLoader(testset, batch_size=4,
 net1 = net.Net()
 net2 = net.Net()
 print("The first NN:")
-# net.learn(net1, trainloader)
+net.learn(net1, trainloader)
 print("\n\n")
 print("The second NN:")
-# net.learn(net2, trainloader)
+net.learn(net2, trainloader)
 
-minimum = 1000
 for theta in range(5):
     currentWay = [way.Way(net1.conv1.weight.data, net2.conv1.weight.data, theta),
                   way.Way(net1.conv1.bias.data, net2.conv1.bias.data, theta),

@@ -1,4 +1,4 @@
-import net
+from models import net
 
 
 class Way:

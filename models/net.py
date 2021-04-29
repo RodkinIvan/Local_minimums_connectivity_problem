@@ -1,9 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-
-
-cuda = 'cuda'
+from config import *
 
 
 class Net(nn.Module):
