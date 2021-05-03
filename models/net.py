@@ -40,7 +40,7 @@ class Net(nn.Module):
 criterion = nn.CrossEntropyLoss()
 
 
-def learn(nt, train_loader, epochs=12):
+def learn(nt, train_loader, epochs=16):
     optimizer = optim.SGD(nt.parameters(), lr=0.001, momentum=0.9)
 
     for epoch in range(epochs):  # loop over the dataset multiple times

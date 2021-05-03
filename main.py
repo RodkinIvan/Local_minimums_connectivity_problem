@@ -2,8 +2,9 @@ import torch
 import torchvision
 import torchvision.transforms as transforms
 from models import net
-import way
 from config import *
+
+import way
 
 
 transform = transforms.Compose(
@@ -19,15 +20,26 @@ testset = torchvision.datasets.CIFAR100(root='./data', train=False,
 testloader = torch.utils.data.DataLoader(testset, batch_size=4,
                                          shuffle=False, num_workers=2)
 
-net1 = net.Net()
-net2 = net.Net()
-print("The first NN:")
-net.learn(net1, trainloader)
-print("\n\n")
-print("The second NN:")
-net.learn(net2, trainloader)
 
-for theta in range(5):
+path = 'learnedNets/'
+net1 = torch.load(path + 'net1.pt')
+net2 = torch.load(path + 'net2.pt')
+
+# //// to learn new nets ////
+
+# print("The first NN:")
+# net.learn(net1, trainloader)
+# torch.save(net1, path + 'net1.pt')
+# print("\n\n")
+# print("The second NN:")
+# net.learn(net2, trainloader)
+# torch.save(net2, path + 'net2.pt')
+
+# ////////////////////////////
+
+thetaNum = 5
+for theta in range(2*thetaNum + 1):
+    theta -= thetaNum
     currentWay = [way.Way(net1.conv1.weight.data, net2.conv1.weight.data, theta),
                   way.Way(net1.conv1.bias.data, net2.conv1.bias.data, theta),
                   way.Way(net1.conv2.weight.data, net2.conv2.weight.data, theta),
@@ -36,8 +48,9 @@ for theta in range(5):
                   way.Way(net1.fc1.bias.data, net2.fc1.bias.data, theta),
                   way.Way(net1.fc2.weight.data, net2.fc2.weight.data, theta),
                   way.Way(net1.fc2.bias.data, net2.fc2.bias.data, theta)]
-
-    minimum = min(minimum, way.count_way(currentWay, trainloader))
+    c = way.count_way(currentWay, trainloader)
+    print(c)
+    minimum = min(minimum, c)
     print(theta, ': ', minimum)
 
 print('minimal :  ', minimum)

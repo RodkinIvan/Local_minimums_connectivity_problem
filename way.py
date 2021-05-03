@@ -1,4 +1,6 @@
+import torch
 from models import net
+from config import *
 
 
 class Way:
@@ -12,22 +14,25 @@ class Way:
         self.theta = theta
 
     def count(self, t):
-        return (1 - t) ** 2 * self.w1 + 2 * t * (1 - t) * self.theta + t ** 2 * self.w2
+        one = torch.ones(self.w1.size())
+        one = one.to(cuda)
+        return ((1 - t) ** 2 * self.w1) + (2 * t * (1 - t) * self.theta * one) + (t ** 2 * self.w2)
 
 
-def count_way(way, train_loader, freq=10):
+def count_way(way, train_loader, freq=3):
     network = net.Net()
     loss = 0
     total = 0
+
     for t in range(freq):
-        network.conv1.weight.data = way[0].count(t/freq)
-        network.conv1.bias.data = way[1].count(t/freq)
-        network.conv2.weight.data = way[2].count(t/freq)
-        network.conv2.bias.data = way[3].count(t/freq)
-        network.fc1.weight.data = way[4].count(t/freq)
-        network.fc1.bias.data = way[5].count(t/freq)
-        network.fc2.weight.data = way[6].count(t/freq)
-        network.fc2.bias.data = way[7].count(t/freq)
+        network.conv1.weight.data = way[0].count(t / freq)
+        network.conv1.bias.data = way[1].count(t / freq)
+        network.conv2.weight.data = way[2].count(t / freq)
+        network.conv2.bias.data = way[3].count(t / freq)
+        network.fc1.weight.data = way[4].count(t / freq)
+        network.fc1.bias.data = way[5].count(t / freq)
+        network.fc2.weight.data = way[6].count(t / freq)
+        network.fc2.bias.data = way[7].count(t / freq)
         for i, data in enumerate(train_loader, 0):
             inputs, labels = data
             labels = labels.to(net.cuda)
@@ -36,5 +41,5 @@ def count_way(way, train_loader, freq=10):
             criterion = net.criterion(outputs, labels)
             loss += criterion.item()
         loss /= 12000
-        total += loss/freq
+        total += loss / freq
     return total
