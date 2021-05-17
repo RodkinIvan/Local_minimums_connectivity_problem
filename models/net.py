@@ -1,6 +1,7 @@
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
+from config import *
 
 
 class Net(nn.Module):
@@ -18,6 +19,14 @@ class Net(nn.Module):
         self.conv2 = nn.Conv2d(self.c1, self.c2, self.ker)
         self.fc1 = nn.Linear(self.c2 * (((32 - self.kerSz + 1) // self.pl - self.kerSz + 1) // self.pl) ** 2, self.l1)
         self.fc2 = nn.Linear(self.l1, 100)
+        self.conv1.weight.data = self.conv1.weight.data.to(cuda)
+        self.conv1.bias.data = self.conv1.bias.data.to(cuda)
+        self.conv2.weight.data = self.conv2.weight.data.to(cuda)
+        self.conv2.bias.data = self.conv2.bias.data.to(cuda)
+        self.fc1.weight.data = self.fc1.weight.data.to(cuda)
+        self.fc1.bias.data = self.fc1.bias.data.to(cuda)
+        self.fc2.weight.data = self.fc2.weight.data.to(cuda)
+        self.fc2.bias.data = self.fc2.bias.data.to(cuda)
 
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
@@ -31,22 +40,23 @@ class Net(nn.Module):
 criterion = nn.CrossEntropyLoss()
 
 
-def learn(nt, train_loader):
+def learn(nt, train_loader, epochs=16):
     optimizer = optim.SGD(nt.parameters(), lr=0.001, momentum=0.9)
 
-    for epoch in range(12):  # loop over the dataset multiple times
+    for epoch in range(epochs):  # loop over the dataset multiple times
 
         running_loss = 0.0
         for i, data in enumerate(train_loader, 0):
             # get the inputs; data is a list of [inputs, labels]
             inputs, labels = data
-
+            labels = labels.to(cuda)
+            inputs = inputs.to(cuda)
             # zero the parameter gradients
             optimizer.zero_grad()
 
             # forward + backward + optimize
             outputs = nt(inputs)
-            loss = Net.criterion(outputs, labels)
+            loss = criterion(outputs, labels)
             loss.backward()
             optimizer.step()
 
